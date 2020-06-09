@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FloWatering</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_detail">DetailActivity</string>
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="add_plant_label">Dodaj nową roślinę</string>
+    <string name="name_label">Twoja nazwa: </string>
+    <string name="species_label">Gatunek: </string>
+    <string name="freq_label">Częstotliwość podlewania (w dniach): </string>
+    <string name="zero_label">0 </string>
+    <string name="photo_label">Dodaj zdjęcie: </string>
+    <string name="photo_button">Wgraj </string>
+    <string name="info_label">Dodatkowe informacje: </string>
+    <string name="save_button">Zapisz </string>
+
+    <string name="default_details">Szczegółowe informacje. </string>
+    <string name="statement">Komunikat</string>
+    <string name="image">Obrazek. </string>
+    <string name="last_date_label">Data ostatniego podlania: </string>
+    <string name="next_date_label">Data następnego podlania: </string>
+    <string name="confirm_button">Potwierdź podlanie rośliny </string>
+    <string name="edit_button">Edytuj </string>
+</resources>
