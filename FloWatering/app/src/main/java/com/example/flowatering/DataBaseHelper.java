@@ -1,5 +1,4 @@
 package com.example.flowatering;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -43,34 +42,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     DataBaseContract.FeedEntry.NAME + " TEXT," +
                     DataBaseContract.FeedEntry.SPECIES + " TEXT," +
                     DataBaseContract.FeedEntry.IS_WATERED + " INTEGER," +
+                    DataBaseContract.FeedEntry.LAST_WATERED + " TEXT," +
                     DataBaseContract.FeedEntry.HOW_OFTEN + " INTEGER," +
                     DataBaseContract.FeedEntry.PHOTO + " TEXT)";
 
     //deleting a table
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DataBaseContract.FeedEntry.TABLE_NAME;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
