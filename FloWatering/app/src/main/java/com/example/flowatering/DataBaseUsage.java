@@ -7,7 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DataBaseUsage {
@@ -24,6 +28,7 @@ public class DataBaseUsage {
         values.put(DataBaseContract.FeedEntry.NAME,name);
         values.put(DataBaseContract.FeedEntry.SPECIES,species);
         values.put(DataBaseContract.FeedEntry.IS_WATERED,is_watered);
+        values.put(DataBaseContract.FeedEntry.LAST_WATERED,last_watered);
         values.put(DataBaseContract.FeedEntry.HOW_OFTEN,how_often);
         values.put(DataBaseContract.FeedEntry.PHOTO,photo);
 
@@ -43,6 +48,7 @@ public class DataBaseUsage {
                 DataBaseContract.FeedEntry.NAME,
                 DataBaseContract.FeedEntry.SPECIES,
                 DataBaseContract.FeedEntry.IS_WATERED,
+                DataBaseContract.FeedEntry.LAST_WATERED,
                 DataBaseContract.FeedEntry.HOW_OFTEN,
                 DataBaseContract.FeedEntry.PHOTO
         };
@@ -71,6 +77,9 @@ public class DataBaseUsage {
         while(cursor.moveToNext()) {
             long itemId = cursor.getLong(
                     cursor.getColumnIndexOrThrow(DataBaseContract.FeedEntry._ID));
+
+            updateIfIsNotWatered(DataBaseContract.FeedEntry._ID);
+
             itemIds.add(itemId);
         }
         cursor.close();
@@ -111,6 +120,35 @@ public class DataBaseUsage {
                 values,
                 selection,
                 selectionArgs);
+    }
+
+    void updateIfIsNotWatered(String Id){  //uruchamiana raz dziennie na kazdym rekordzie, zeby zupdateowac czy juz wymaga podlania
+        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        //obliczanie liczby dni pomiedzy podlewaniami
+        Date now = new Date();
+        LocalDate last = LocalDate.parse(DataBaseContract.FeedEntry.LAST_WATERED);
+        int days = ChronoUnit.DAYS.between(now, last);
+
+        if(days > DataBaseContract.FeedEntry.HOW_OFTEN){
+            ContentValues values = new ContentValues();
+            values.put(DataBaseContract.FeedEntry.IS_WATERED, 0);
+
+            // Which row to update, based on the id
+            String selection = DataBaseContract.FeedEntry._ID + " LIKE ?";
+            String[] selectionArgs = { Id };
+
+            int count = db.update(
+                    DataBaseContract.FeedEntry.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs);
+
+        }
+
+
+
     }
 
 
