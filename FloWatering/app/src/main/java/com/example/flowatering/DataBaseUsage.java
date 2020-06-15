@@ -2,12 +2,15 @@ package com.example.flowatering;
 
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.provider.BaseColumns;
+import android.view.View;
 
-import java.text.SimpleDateFormat;
+import androidx.annotation.RequiresApi;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -18,13 +21,19 @@ public class DataBaseUsage {
     //creating a database
 
     long createWritable() {
-        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        DataBaseHelper dbHelper = new DataBaseHelper(MyApplication.getAppContext());
 
         //putting info to database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         //mapa wartosci, nazwy kolumn to klucze
         ContentValues values = new ContentValues();
+        String name = "Nazwa";
+        String species = "gatunek1";
+        int is_watered = 1;
+        String last_watered = "14-06-2020";
+        int how_often = 3;
+        String photo = "www.kwiatek1.pl";
         values.put(DataBaseContract.FeedEntry.NAME,name);
         values.put(DataBaseContract.FeedEntry.SPECIES,species);
         values.put(DataBaseContract.FeedEntry.IS_WATERED,is_watered);
@@ -37,12 +46,13 @@ public class DataBaseUsage {
         return newRowId;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     void readDatabase(){
-        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        DataBaseHelper dbHelper = new DataBaseHelper(MyApplication.getAppContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 
-    // definiujemy ktore kolumny chcemy wyswietlac po tej komendzie
+        // definiujemy ktore kolumny chcemy wyswietlac po tej komendzie
         String[] projection = {
                 BaseColumns._ID,
                 DataBaseContract.FeedEntry.NAME,
@@ -53,8 +63,8 @@ public class DataBaseUsage {
                 DataBaseContract.FeedEntry.PHOTO
         };
 
-    // filtrujemy rezultaty WHERE "is_watered" = '0'  - wyswietlanie w aplikacji (można tez filtrować po nazwie)
-    //czyli tylko te niepodlane
+        // filtrujemy rezultaty WHERE "is_watered" = '0'  - wyswietlanie w aplikacji (można tez filtrować po nazwie)
+        //czyli tylko te niepodlane
 
         String selection = DataBaseContract.FeedEntry.IS_WATERED + " = ?";
         String[] selectionArgs = { "0" };
@@ -88,7 +98,7 @@ public class DataBaseUsage {
     }
 
     int deleteFromDataBase(){
-        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        DataBaseHelper dbHelper = new DataBaseHelper(MyApplication.getAppContext());
 
         //putting info to database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -103,7 +113,7 @@ public class DataBaseUsage {
     }
 
     void updateDataBase(){
-        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        DataBaseHelper dbHelper = new DataBaseHelper(MyApplication.getAppContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // nowa wartosc dla jakiejs kolumny
@@ -122,16 +132,23 @@ public class DataBaseUsage {
                 selectionArgs);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     void updateIfIsNotWatered(String Id){  //uruchamiana raz dziennie na kazdym rekordzie, zeby zupdateowac czy juz wymaga podlania
-        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        DataBaseHelper dbHelper = new DataBaseHelper(MyApplication.getAppContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         //obliczanie liczby dni pomiedzy podlewaniami
         Date now = new Date();
         LocalDate last = LocalDate.parse(DataBaseContract.FeedEntry.LAST_WATERED);
-        int days = ChronoUnit.DAYS.between(now, last);
 
-        if(days > DataBaseContract.FeedEntry.HOW_OFTEN){
+
+        Instant instantFromDate = now.toInstant();
+        int days = (int) ChronoUnit.DAYS.between(instantFromDate, last);
+        System.out.println(days);
+
+        int nr_of_days = Integer.parseInt(DataBaseContract.FeedEntry.HOW_OFTEN);
+
+        if(days > nr_of_days){
             ContentValues values = new ContentValues();
             values.put(DataBaseContract.FeedEntry.IS_WATERED, 0);
 
