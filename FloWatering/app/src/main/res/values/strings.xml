@@ -10,7 +10,7 @@
     <string name="species_label">Gatunek: </string>
     <string name="freq_label">Częstotliwość podlewania (w dniach): </string>
     <string name="zero_label">0 </string>
-    <string name="photo_label">Dodaj zdjęcie: </string>
+    <string name="photo_label">Dodaj zdjęcie (adres url): </string>
     <string name="photo_button">Wgraj </string>
     <string name="info_label">Dodatkowe informacje: </string>
     <string name="save_button">Zapisz </string>
