@@ -28,18 +28,10 @@ public class PlantsListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.plantslist_fragment, container, false);
 
         ListData[] myListData = new ListData[] {
-                new ListData("Email", android.R.drawable.ic_dialog_email),
-                new ListData("Info", android.R.drawable.ic_dialog_info),
-                new ListData("Delete", android.R.drawable.ic_delete),
-                new ListData("Dialer", android.R.drawable.ic_dialog_dialer),
-                new ListData("Alert", android.R.drawable.ic_dialog_alert),
-                new ListData("Map", android.R.drawable.ic_dialog_map),
-                new ListData("Email", android.R.drawable.ic_dialog_email),
-                new ListData("Info", android.R.drawable.ic_dialog_info),
-                new ListData("Delete", android.R.drawable.ic_delete),
-                new ListData("Dialer", android.R.drawable.ic_dialog_dialer),
-                new ListData("Alert", android.R.drawable.ic_dialog_alert),
-                new ListData("Map", android.R.drawable.ic_dialog_map),
+                new ListData("Kwiatek 1", R.drawable.ic_good),
+                new ListData("Kwiatek 2", R.drawable.ic_neutral),
+                new ListData("Kwiatek 3", R.drawable.ic_bad),
+
         };
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
