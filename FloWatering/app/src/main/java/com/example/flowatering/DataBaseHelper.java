@@ -1,6 +1,9 @@
 package com.example.flowatering;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +12,8 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.io.File;
 import java.text.ParseException;
@@ -22,7 +27,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.flowatering.MyApplication.CHANNEL_1_ID;
+import static com.example.flowatering.MyApplication.CHANNEL_2_ID;
+import static com.example.flowatering.MyApplication.getAppContext;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
+    private NotificationManagerCompat notificationManager;
 
     // po zmianie schemy zmieniamy nr wersji bazy
     private static final int DATABASE_VERSION = 1;
@@ -187,6 +197,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     selectionArgs);
 
         }
+        notificationManager = NotificationManagerCompat.from(getAppContext());
+        NotifyToCheckAllPlants();
 
 
 
@@ -194,4 +206,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public int daysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
+
+
+
+
+    public void NotifyToCheckAllPlants() {
+        String title = "Twoje roślinki potrzebują uwagi!";
+        String message = "Sprawdź stan nawodnienia swoich roślin";
+
+        Intent activityIntent = new Intent(getAppContext(), MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(getAppContext(),
+                0, activityIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(getAppContext(), CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setContentIntent(contentIntent)
+                .build();
+        notificationManager.notify(1, notification);
+    }
+
 }

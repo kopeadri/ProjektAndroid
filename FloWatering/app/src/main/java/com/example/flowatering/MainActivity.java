@@ -2,16 +2,22 @@ package com.example.flowatering;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 
+
+
 public class MainActivity extends AppCompatActivity implements PlantsListFragment.PlantsListFragmentActivityListener {
 
-
+    private NotificationManagerCompat notificationManager;
     MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements PlantsListFragmen
 
         IntentFilter filter = new IntentFilter("com.example.MY_ACTION");
         registerReceiver(broadcastReceiver, filter);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -41,5 +48,6 @@ public class MainActivity extends AppCompatActivity implements PlantsListFragmen
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
     }
+
 
 }
