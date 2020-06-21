@@ -50,26 +50,6 @@ public class PlantsListFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.plantslist_fragment, container, false);
 
-        ListData[] myListData = new ListData[database.numberOfRows()];
-        List<List<String>> dataList = database.getAllFlowers();
-        int pic;
-
-        for (int i=0; i<database.numberOfRows(); i++) {
-            Log.d("pic",dataList.get(i).get(1));
-            if (dataList.get(i).get(1).equals("1")){
-                pic = R.drawable.ic_good;
-            }else{
-                pic = R.drawable.ic_bad;
-            }
-            myListData[i] = new ListData( dataList.get(i).get(0), pic);
-        }
-
-        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
-        ListAdapter adapter = new ListAdapter(myListData);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-
         FloatingActionButton add = rootView.findViewById(R.id.addButton);
 
 
