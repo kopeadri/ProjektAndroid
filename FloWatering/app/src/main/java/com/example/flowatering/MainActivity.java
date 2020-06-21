@@ -1,12 +1,16 @@
 package com.example.flowatering;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity implements PlantsListFragment.PlantsListFragmentActivityListener {
+
 
     MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver();
     @Override
@@ -18,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements PlantsListFragmen
         registerReceiver(broadcastReceiver, filter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemSelected(String msg) {
         DetailsFragment fragment = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.details);
