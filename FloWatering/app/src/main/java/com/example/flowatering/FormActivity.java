@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -39,6 +40,12 @@ public class FormActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+    }
+
+    public void sendBroadcast(View v) {
+        Intent intent = new Intent("com.example.MY_ACTION");
+        intent.putExtra("com.example.MY_ACTION", "Zapisano nową roślinkę");
+        sendBroadcast(intent);
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

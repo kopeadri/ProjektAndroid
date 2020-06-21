@@ -3,15 +3,19 @@ package com.example.flowatering;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity implements PlantsListFragment.PlantsListFragmentActivityListener {
 
-
+    MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IntentFilter filter = new IntentFilter("com.example.MY_ACTION");
+        registerReceiver(broadcastReceiver, filter);
     }
 
     @Override
@@ -25,6 +29,12 @@ public class MainActivity extends AppCompatActivity implements PlantsListFragmen
             intent.putExtra("msg", msg);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }
